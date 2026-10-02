@@ -12,6 +12,7 @@ import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/LoginPage'
 import MarketplacePage from './pages/MarketplacePage'
 import NewJobPage from './pages/NewJobPage'
+import NotFoundPage from './pages/NotFoundPage'
 import ProfessionalApplicationsPage from './pages/ProfessionalApplicationsPage'
 import ProfessionalDashboardPage from './pages/ProfessionalDashboardPage'
 import ProfessionalJobsPage from './pages/ProfessionalJobsPage'
@@ -69,6 +70,8 @@ function App() {
           <Route path="/admin/jobs" element={<AdminJobsPage />} />
           <Route path="/admin/reports" element={<AdminReportsPage />} />
         </Route>
+
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </BrowserRouter>
   )

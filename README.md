@@ -284,7 +284,7 @@ PHASE 18 → Post-MVP features
 - [x] Create admin routes
 - [x] Create protected routes
 - [x] Create role-based route protection
-- [ ] Create 404 route
+- [x] Create 404 route
 
 ### Application Layout
 
