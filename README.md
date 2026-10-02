@@ -140,15 +140,9 @@ Those are future work.
 
 ---
 
-# 4. DEVELOPMENT RULES
+# 4. DEVELOPMENT RULES (Tech shit, ignore if not engineering it)
 
 ## IMPORTANT
-
-Build incrementally.
-
-Do not attempt to implement the entire application in one pass.
-
-When working with an AI coding assistant:
 
 1. Inspect the current repository.
 2. Read this README.
