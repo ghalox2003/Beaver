@@ -1,9 +1,13 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import ClientDashboardPage from './pages/ClientDashboardPage'
+import ClientJobsPage from './pages/ClientJobsPage'
+import ClientProfessionalsPage from './pages/ClientProfessionalsPage'
 import ForgotPasswordPage from './pages/ForgotPasswordPage'
 import JobsPage from './pages/JobsPage'
 import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/LoginPage'
 import MarketplacePage from './pages/MarketplacePage'
+import NewJobPage from './pages/NewJobPage'
 import ProfessionalsPage from './pages/ProfessionalsPage'
 import SignupPage from './pages/SignupPage'
 
@@ -20,6 +24,14 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+
+        <Route path="/client" element={<ClientDashboardPage />} />
+        <Route path="/client/jobs" element={<ClientJobsPage />} />
+        <Route path="/client/jobs/new" element={<NewJobPage />} />
+        <Route
+          path="/client/professionals"
+          element={<ClientProfessionalsPage />}
+        />
       </Routes>
     </BrowserRouter>
   )
