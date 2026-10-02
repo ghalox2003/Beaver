@@ -262,7 +262,7 @@ PHASE 18 → Post-MVP features
 - [ ] Add final responsive polish
 - [x] Add SEO metadata
 - [x] Add proper favicon
-- [ ] Add social sharing metadata
+- [x] Add social sharing metadata
 
 ### Landing Page Principle
 
