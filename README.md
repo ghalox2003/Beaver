@@ -293,8 +293,8 @@ PHASE 18 → Post-MVP features
 - [x] Create navigation system
 - [x] Create sidebar
 - [x] Create top navigation
-- [ ] Create reusable page container
-- [ ] Create reusable page header
+- [x] Create reusable page container
+- [x] Create reusable page header
 - [ ] Create reusable loading state
 - [ ] Create reusable error state
 - [ ] Create reusable empty state
