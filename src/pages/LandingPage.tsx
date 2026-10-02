@@ -169,7 +169,7 @@ function LandingPage() {
                       </p>
                       <div className="mt-1 flex items-center gap-1.5 font-bold">
                         <MapPin size={16} />
-                        Montreal
+                        Your area
                       </div>
                     </div>
 
@@ -180,9 +180,9 @@ function LandingPage() {
 
                   <div className="space-y-2.5">
                     {[
-                      ['Plumber', '12 available nearby'],
-                      ['Electrician', '8 available nearby'],
-                      ['Carpenter', '6 available nearby'],
+                      ['Plumber', 'Find local professionals'],
+                      ['Electrician', 'Find local professionals'],
+                      ['Carpenter', 'Find local professionals'],
                     ].map(([trade, availability]) => (
                       <div
                         key={trade}
@@ -328,13 +328,13 @@ function LandingPage() {
                   </div>
                   <div className="mt-2 flex items-end justify-between">
                     <div>
-                      <p className="text-2xl font-extrabold">26</p>
+                      <p className="text-2xl font-extrabold">Explore</p>
                       <p className="text-xs text-forest-900/50">
-                        professionals & jobs
+                        professionals and local jobs
                       </p>
                     </div>
                     <span className="rounded-full bg-sage/40 px-3 py-1 text-xs font-bold">
-                      Live area
+                      Explore locally
                     </span>
                   </div>
                 </div>
