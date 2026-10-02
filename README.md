@@ -343,7 +343,7 @@ PHASE 18 → Post-MVP features
 ### Authentication UX
 
 - [x] Add form validation
-- [ ] Add loading states
+- [x] Add loading states
 - [x] Add error messages
 - [ ] Add success states
 - [ ] Add password visibility toggle

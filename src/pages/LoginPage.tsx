@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
+import { LoaderCircle } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 function LoginPage() {
   const [error, setError] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -17,6 +19,10 @@ function LoginPage() {
     }
 
     setError('')
+    setIsSubmitting(true)
+
+    // Authentication will be connected to the backend later.
+    setIsSubmitting(false)
   }
 
   return (
@@ -35,7 +41,7 @@ function LoginPage() {
         </p>
       </div>
 
-      <form className="mt-8 space-y-5" onSubmit={handleSubmit} noValidate={false}>
+      <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
         <div>
           <label
             htmlFor="login-email"
@@ -48,8 +54,9 @@ function LoginPage() {
             name="email"
             type="email"
             required
+            disabled={isSubmitting}
             placeholder="you@example.com"
-            className="w-full rounded-2xl border border-forest-900/10 bg-paper px-4 py-3.5 text-sm outline-none transition placeholder:text-forest-900/30 focus:border-forest-700 focus:ring-4 focus:ring-sage/25"
+            className="w-full rounded-2xl border border-forest-900/10 bg-paper px-4 py-3.5 text-sm outline-none transition placeholder:text-forest-900/30 focus:border-forest-700 focus:ring-4 focus:ring-sage/25 disabled:cursor-not-allowed disabled:opacity-60"
           />
         </div>
 
@@ -75,8 +82,9 @@ function LoginPage() {
             name="password"
             type="password"
             required
+            disabled={isSubmitting}
             placeholder="Enter your password"
-            className="w-full rounded-2xl border border-forest-900/10 bg-paper px-4 py-3.5 text-sm outline-none transition placeholder:text-forest-900/30 focus:border-forest-700 focus:ring-4 focus:ring-sage/25"
+            className="w-full rounded-2xl border border-forest-900/10 bg-paper px-4 py-3.5 text-sm outline-none transition placeholder:text-forest-900/30 focus:border-forest-700 focus:ring-4 focus:ring-sage/25 disabled:cursor-not-allowed disabled:opacity-60"
           />
         </div>
 
@@ -88,9 +96,11 @@ function LoginPage() {
 
         <button
           type="submit"
-          className="w-full rounded-2xl bg-forest-900 px-5 py-3.5 text-sm font-bold !text-white transition hover:-translate-y-0.5 hover:shadow-lg"
+          disabled={isSubmitting}
+          className="flex w-full items-center justify-center gap-2 rounded-2xl bg-forest-900 px-5 py-3.5 text-sm font-bold !text-white transition hover:-translate-y-0.5 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0 disabled:hover:shadow-none"
         >
-          Log in
+          {isSubmitting && <LoaderCircle className="animate-spin" size={18} />}
+          {isSubmitting ? 'Logging in...' : 'Log in'}
         </button>
       </form>
 

@@ -1,10 +1,11 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, LoaderCircle } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 function ForgotPasswordPage() {
   const [error, setError] = useState('')
+  const [isSubmitting, setIsSubmitting] = useState(false)
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -18,6 +19,10 @@ function ForgotPasswordPage() {
     }
 
     setError('')
+    setIsSubmitting(true)
+
+    // Password reset will be connected to the backend later.
+    setIsSubmitting(false)
   }
 
   return (
@@ -57,8 +62,9 @@ function ForgotPasswordPage() {
             name="email"
             type="email"
             required
+            disabled={isSubmitting}
             placeholder="you@example.com"
-            className="w-full rounded-2xl border border-forest-900/10 bg-paper px-4 py-3.5 text-sm outline-none transition placeholder:text-forest-900/30 focus:border-forest-700 focus:ring-4 focus:ring-sage/25"
+            className="w-full rounded-2xl border border-forest-900/10 bg-paper px-4 py-3.5 text-sm outline-none transition placeholder:text-forest-900/30 focus:border-forest-700 focus:ring-4 focus:ring-sage/25 disabled:cursor-not-allowed disabled:opacity-60"
           />
         </div>
 
@@ -70,9 +76,11 @@ function ForgotPasswordPage() {
 
         <button
           type="submit"
-          className="w-full rounded-2xl bg-forest-900 px-5 py-3.5 text-sm font-bold !text-white transition hover:-translate-y-0.5 hover:shadow-lg"
+          disabled={isSubmitting}
+          className="flex w-full items-center justify-center gap-2 rounded-2xl bg-forest-900 px-5 py-3.5 text-sm font-bold !text-white transition hover:-translate-y-0.5 hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-70 disabled:hover:translate-y-0 disabled:hover:shadow-none"
         >
-          Send reset link
+          {isSubmitting && <LoaderCircle className="animate-spin" size={18} />}
+          {isSubmitting ? 'Sending...' : 'Send reset link'}
         </button>
       </form>
     </div>
