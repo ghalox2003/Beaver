@@ -185,6 +185,7 @@ PHASE 15 → Security / validation / edge cases
 PHASE 16 → Deployment
 PHASE 17 → Payments
 PHASE 18 → Post-MVP features
+```
 
 # Beaver
 
