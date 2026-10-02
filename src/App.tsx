@@ -34,7 +34,7 @@ function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
-        <Route element={<ProtectedRoute />}>
+        <Route element={<ProtectedRoute allowedRoles={['client']} />}>
           <Route path="/client" element={<ClientDashboardPage />} />
           <Route path="/client/jobs" element={<ClientJobsPage />} />
           <Route path="/client/jobs/new" element={<NewJobPage />} />
@@ -42,9 +42,17 @@ function App() {
             path="/client/professionals"
             element={<ClientProfessionalsPage />}
           />
+        </Route>
 
-          <Route path="/professional" element={<ProfessionalDashboardPage />} />
-          <Route path="/professional/jobs" element={<ProfessionalJobsPage />} />
+        <Route element={<ProtectedRoute allowedRoles={['professional']} />}>
+          <Route
+            path="/professional"
+            element={<ProfessionalDashboardPage />}
+          />
+          <Route
+            path="/professional/jobs"
+            element={<ProfessionalJobsPage />}
+          />
           <Route
             path="/professional/applications"
             element={<ProfessionalApplicationsPage />}
@@ -53,7 +61,9 @@ function App() {
             path="/professional/profile"
             element={<ProfessionalProfilePage />}
           />
+        </Route>
 
+        <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
           <Route path="/admin" element={<AdminDashboardPage />} />
           <Route path="/admin/users" element={<AdminUsersPage />} />
           <Route path="/admin/jobs" element={<AdminJobsPage />} />
