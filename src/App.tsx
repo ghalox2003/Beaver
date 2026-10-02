@@ -8,6 +8,10 @@ import LandingPage from './pages/LandingPage'
 import LoginPage from './pages/LoginPage'
 import MarketplacePage from './pages/MarketplacePage'
 import NewJobPage from './pages/NewJobPage'
+import ProfessionalApplicationsPage from './pages/ProfessionalApplicationsPage'
+import ProfessionalDashboardPage from './pages/ProfessionalDashboardPage'
+import ProfessionalJobsPage from './pages/ProfessionalJobsPage'
+import ProfessionalProfilePage from './pages/ProfessionalProfilePage'
 import ProfessionalsPage from './pages/ProfessionalsPage'
 import SignupPage from './pages/SignupPage'
 
@@ -31,6 +35,17 @@ function App() {
         <Route
           path="/client/professionals"
           element={<ClientProfessionalsPage />}
+        />
+
+        <Route path="/professional" element={<ProfessionalDashboardPage />} />
+        <Route path="/professional/jobs" element={<ProfessionalJobsPage />} />
+        <Route
+          path="/professional/applications"
+          element={<ProfessionalApplicationsPage />}
+        />
+        <Route
+          path="/professional/profile"
+          element={<ProfessionalProfilePage />}
         />
       </Routes>
     </BrowserRouter>
