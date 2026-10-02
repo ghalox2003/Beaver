@@ -1,12 +1,16 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { Eye, EyeOff, LoaderCircle } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
+
+type UserRole = 'client' | 'professional' | 'admin'
 
 function LoginPage() {
+  const navigate = useNavigate()
   const [error, setError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const [role, setRole] = useState<UserRole>('client')
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -22,8 +26,17 @@ function LoginPage() {
     setError('')
     setIsSubmitting(true)
 
-    // Authentication will be connected to the backend later.
-    setIsSubmitting(false)
+    // Temporary frontend-only authentication until the backend is connected.
+    localStorage.setItem('beaver:authenticated', 'true')
+    localStorage.setItem('beaver:role', role)
+
+    const dashboardByRole: Record<UserRole, string> = {
+      client: '/client',
+      professional: '/professional',
+      admin: '/admin',
+    }
+
+    navigate(dashboardByRole[role], { replace: true })
   }
 
   return (
@@ -100,6 +113,56 @@ function LoginPage() {
             </button>
           </div>
         </div>
+
+        <fieldset disabled={isSubmitting}>
+          <legend className="mb-2 block text-sm font-bold">
+            Log in as
+          </legend>
+
+          <div className="grid grid-cols-3 gap-3">
+            <label className="cursor-pointer rounded-2xl border border-forest-900/10 bg-paper p-3 transition has-[:checked]:border-forest-700 has-[:checked]:bg-sage/20">
+              <input
+                type="radio"
+                name="role"
+                value="client"
+                checked={role === 'client'}
+                onChange={() => setRole('client')}
+                className="sr-only"
+              />
+              <span className="block text-center text-sm font-bold">
+                Client
+              </span>
+            </label>
+
+            <label className="cursor-pointer rounded-2xl border border-forest-900/10 bg-paper p-3 transition has-[:checked]:border-forest-700 has-[:checked]:bg-sage/20">
+              <input
+                type="radio"
+                name="role"
+                value="professional"
+                checked={role === 'professional'}
+                onChange={() => setRole('professional')}
+                className="sr-only"
+              />
+              <span className="block text-center text-sm font-bold">
+                Professional
+              </span>
+            </label>
+
+            <label className="cursor-pointer rounded-2xl border border-forest-900/10 bg-paper p-3 transition has-[:checked]:border-forest-700 has-[:checked]:bg-sage/20">
+              <input
+                type="radio"
+                name="role"
+                value="admin"
+                checked={role === 'admin'}
+                onChange={() => setRole('admin')}
+                className="sr-only"
+              />
+              <span className="block text-center text-sm font-bold">
+                Admin
+              </span>
+            </label>
+          </div>
+        </fieldset>
 
         {error && (
           <p className="rounded-2xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700">

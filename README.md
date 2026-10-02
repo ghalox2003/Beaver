@@ -338,7 +338,7 @@ PHASE 18 → Post-MVP features
 - [ ] Store user role in database
 - [x] Restrict routes according to role
 - [ ] Prevent unauthorized API access
-- [ ] Redirect users to the correct dashboard
+- [x] Redirect users to the correct dashboard
 
 ### Authentication UX
 
