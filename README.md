@@ -36,6 +36,26 @@ Payments are deliberately postponed until after the core marketplace works.
 
 ---
 
+# Project state
+
+Current phase: Phase 0 complete, Phase 2 (application structure) next.
+
+What exists today:
+- Landing page (`src/pages/LandingPage.tsx`), responsive, with mobile nav.
+- Project structure and conventions (see `CONVENTIONS.md`).
+
+What does not exist yet: routing, auth, database, marketplace, map, jobs.
+
+Run locally:
+
+    npm install
+    cp .env.example .env
+    npm run dev
+
+Checks before every commit: `npm run lint` and `npm run build`.
+
+---
+
 # 1. PRODUCT PRINCIPLES
 
 Beaver should feel like a real modern startup product, not a school project.
@@ -219,7 +239,7 @@ PHASE 18 → Post-MVP features
 - [x] `npm run lint` succeeds
 - [x] Application runs correctly locally
 - [x] Git working tree is clean
-- [ ] README reflects actual project state
+- [x] README reflects actual project state
 
 ---
 
