@@ -277,7 +277,7 @@ PHASE 18 → Post-MVP features
 ### Routing
 
 - [x] Configure React Router
-- [ ] Create public routes
+- [x] Create public routes
 - [ ] Create authentication routes
 - [ ] Create client routes
 - [ ] Create professional routes
