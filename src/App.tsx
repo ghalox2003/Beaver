@@ -17,6 +17,7 @@ import ProfessionalDashboardPage from './pages/ProfessionalDashboardPage'
 import ProfessionalJobsPage from './pages/ProfessionalJobsPage'
 import ProfessionalProfilePage from './pages/ProfessionalProfilePage'
 import ProfessionalsPage from './pages/ProfessionalsPage'
+import ProtectedRoute from './components/ProtectedRoute'
 import SignupPage from './pages/SignupPage'
 
 function App() {
@@ -33,29 +34,31 @@ function App() {
         <Route path="/signup" element={<SignupPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
 
-        <Route path="/client" element={<ClientDashboardPage />} />
-        <Route path="/client/jobs" element={<ClientJobsPage />} />
-        <Route path="/client/jobs/new" element={<NewJobPage />} />
-        <Route
-          path="/client/professionals"
-          element={<ClientProfessionalsPage />}
-        />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/client" element={<ClientDashboardPage />} />
+          <Route path="/client/jobs" element={<ClientJobsPage />} />
+          <Route path="/client/jobs/new" element={<NewJobPage />} />
+          <Route
+            path="/client/professionals"
+            element={<ClientProfessionalsPage />}
+          />
 
-        <Route path="/professional" element={<ProfessionalDashboardPage />} />
-        <Route path="/professional/jobs" element={<ProfessionalJobsPage />} />
-        <Route
-          path="/professional/applications"
-          element={<ProfessionalApplicationsPage />}
-        />
-        <Route
-          path="/professional/profile"
-          element={<ProfessionalProfilePage />}
-        />
+          <Route path="/professional" element={<ProfessionalDashboardPage />} />
+          <Route path="/professional/jobs" element={<ProfessionalJobsPage />} />
+          <Route
+            path="/professional/applications"
+            element={<ProfessionalApplicationsPage />}
+          />
+          <Route
+            path="/professional/profile"
+            element={<ProfessionalProfilePage />}
+          />
 
-        <Route path="/admin" element={<AdminDashboardPage />} />
-        <Route path="/admin/users" element={<AdminUsersPage />} />
-        <Route path="/admin/jobs" element={<AdminJobsPage />} />
-        <Route path="/admin/reports" element={<AdminReportsPage />} />
+          <Route path="/admin" element={<AdminDashboardPage />} />
+          <Route path="/admin/users" element={<AdminUsersPage />} />
+          <Route path="/admin/jobs" element={<AdminJobsPage />} />
+          <Route path="/admin/reports" element={<AdminReportsPage />} />
+        </Route>
       </Routes>
     </BrowserRouter>
   )
