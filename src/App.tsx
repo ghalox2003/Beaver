@@ -4,6 +4,7 @@ import AdminJobsPage from './pages/AdminJobsPage'
 import AdminReportsPage from './pages/AdminReportsPage'
 import AdminUsersPage from './pages/AdminUsersPage'
 import ApplicationShell from './layouts/ApplicationShell'
+import AuthShell from './layouts/AuthShell'
 import ClientDashboardPage from './pages/ClientDashboardPage'
 import ClientJobsPage from './pages/ClientJobsPage'
 import ClientProfessionalsPage from './pages/ClientProfessionalsPage'
@@ -34,9 +35,14 @@ function App() {
           <Route path="/professionals" element={<ProfessionalsPage />} />
           <Route path="/jobs" element={<JobsPage />} />
 
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
-          <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+          <Route element={<AuthShell />}>
+            <Route path="/login" element={<LoginPage />} />
+            <Route path="/signup" element={<SignupPage />} />
+            <Route
+              path="/forgot-password"
+              element={<ForgotPasswordPage />}
+            />
+          </Route>
 
           <Route element={<ProtectedRoute allowedRoles={['client']} />}>
             <Route element={<DashboardShell role="client" />}>
