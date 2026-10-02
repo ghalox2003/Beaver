@@ -1,11 +1,12 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import { LoaderCircle } from 'lucide-react'
+import { Eye, EyeOff, LoaderCircle } from 'lucide-react'
 import { Link } from 'react-router-dom'
 
 function SignupPage() {
   const [error, setError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [showPassword, setShowPassword] = useState(false)
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
@@ -85,15 +86,28 @@ function SignupPage() {
           >
             Password
           </label>
-          <input
-            id="signup-password"
-            name="password"
-            type="password"
-            required
-            disabled={isSubmitting}
-            placeholder="Create a password"
-            className="w-full rounded-2xl border border-forest-900/10 bg-paper px-4 py-3.5 text-sm outline-none transition placeholder:text-forest-900/30 focus:border-forest-700 focus:ring-4 focus:ring-sage/25 disabled:cursor-not-allowed disabled:opacity-60"
-          />
+
+          <div className="relative">
+            <input
+              id="signup-password"
+              name="password"
+              type={showPassword ? 'text' : 'password'}
+              required
+              disabled={isSubmitting}
+              placeholder="Create a password"
+              className="w-full rounded-2xl border border-forest-900/10 bg-paper px-4 py-3.5 pr-12 text-sm outline-none transition placeholder:text-forest-900/30 focus:border-forest-700 focus:ring-4 focus:ring-sage/25 disabled:cursor-not-allowed disabled:opacity-60"
+            />
+
+            <button
+              type="button"
+              onClick={() => setShowPassword((visible) => !visible)}
+              disabled={isSubmitting}
+              aria-label={showPassword ? 'Hide password' : 'Show password'}
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-xl p-2 text-forest-900/45 transition hover:bg-forest-900/5 hover:text-forest-900 disabled:cursor-not-allowed disabled:opacity-40"
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
         </div>
 
         <fieldset disabled={isSubmitting}>

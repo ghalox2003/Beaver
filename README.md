@@ -346,7 +346,7 @@ PHASE 18 → Post-MVP features
 - [x] Add loading states
 - [x] Add error messages
 - [ ] Add success states
-- [ ] Add password visibility toggle
+- [x] Add password visibility toggle
 - [ ] Add password strength requirements
 
 ---
