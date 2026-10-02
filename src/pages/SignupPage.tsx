@@ -1,17 +1,55 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
-import { Eye, EyeOff, LoaderCircle } from 'lucide-react'
+import { Check, Eye, EyeOff, LoaderCircle } from 'lucide-react'
 import { Link } from 'react-router-dom'
+
+type PasswordRequirement = {
+  label: string
+  test: (password: string) => boolean
+}
+
+const passwordRequirements: PasswordRequirement[] = [
+  {
+    label: 'At least 8 characters',
+    test: (password) => password.length >= 8,
+  },
+  {
+    label: 'One uppercase letter',
+    test: (password) => /[A-Z]/.test(password),
+  },
+  {
+    label: 'One lowercase letter',
+    test: (password) => /[a-z]/.test(password),
+  },
+  {
+    label: 'One number',
+    test: (password) => /\d/.test(password),
+  },
+  {
+    label: 'One special character',
+    test: (password) => /[^A-Za-z0-9]/.test(password),
+  },
+]
 
 function SignupPage() {
   const [error, setError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const [password, setPassword] = useState('')
+
+  const passwordIsValid = passwordRequirements.every((requirement) =>
+    requirement.test(password),
+  )
 
   function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
     const form = event.currentTarget
+
+    if (!passwordIsValid) {
+      setError('Please meet all password requirements.')
+      return
+    }
 
     if (!form.checkValidity()) {
       setError('Please fill in all fields with valid information.')
@@ -92,6 +130,11 @@ function SignupPage() {
               id="signup-password"
               name="password"
               type={showPassword ? 'text' : 'password'}
+              value={password}
+              onChange={(event) => {
+                setPassword(event.target.value)
+                setError('')
+              }}
               required
               disabled={isSubmitting}
               placeholder="Create a password"
@@ -107,6 +150,40 @@ function SignupPage() {
             >
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
+          </div>
+
+          <div className="mt-3 rounded-2xl bg-forest-900/[0.03] p-4">
+            <p className="mb-2 text-xs font-bold uppercase tracking-[0.12em] text-forest-900/45">
+              Password requirements
+            </p>
+
+            <ul className="grid gap-1.5 sm:grid-cols-2">
+              {passwordRequirements.map((requirement) => {
+                const isMet = requirement.test(password)
+
+                return (
+                  <li
+                    key={requirement.label}
+                    className={`flex items-center gap-2 text-xs font-medium transition ${
+                      isMet
+                        ? 'text-forest-700'
+                        : 'text-forest-900/40'
+                    }`}
+                  >
+                    <span
+                      className={`flex h-4 w-4 shrink-0 items-center justify-center rounded-full ${
+                        isMet
+                          ? 'bg-sage/40'
+                          : 'border border-forest-900/15'
+                      }`}
+                    >
+                      {isMet && <Check size={11} strokeWidth={3} />}
+                    </span>
+                    {requirement.label}
+                  </li>
+                )
+              })}
+            </ul>
           </div>
         </div>
 
