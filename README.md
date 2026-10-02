@@ -260,7 +260,7 @@ PHASE 18 → Post-MVP features
 - [x] Establish forest/sage/cream palette
 - [ ] Replace temporary content
 - [ ] Add final responsive polish
-- [ ] Add SEO metadata
+- [x] Add SEO metadata
 - [ ] Add proper favicon
 - [ ] Add social sharing metadata
 
