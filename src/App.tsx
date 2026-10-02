@@ -1,4 +1,8 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import AdminDashboardPage from './pages/AdminDashboardPage'
+import AdminJobsPage from './pages/AdminJobsPage'
+import AdminReportsPage from './pages/AdminReportsPage'
+import AdminUsersPage from './pages/AdminUsersPage'
 import ClientDashboardPage from './pages/ClientDashboardPage'
 import ClientJobsPage from './pages/ClientJobsPage'
 import ClientProfessionalsPage from './pages/ClientProfessionalsPage'
@@ -47,6 +51,11 @@ function App() {
           path="/professional/profile"
           element={<ProfessionalProfilePage />}
         />
+
+        <Route path="/admin" element={<AdminDashboardPage />} />
+        <Route path="/admin/users" element={<AdminUsersPage />} />
+        <Route path="/admin/jobs" element={<AdminJobsPage />} />
+        <Route path="/admin/reports" element={<AdminReportsPage />} />
       </Routes>
     </BrowserRouter>
   )
