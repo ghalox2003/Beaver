@@ -298,8 +298,8 @@ PHASE 18 → Post-MVP features
 - [x] Create reusable loading state
 - [x] Create reusable error state
 - [x] Create reusable empty state
-- [ ] Create reusable modal/dialog system
-- [ ] Create reusable toast/notification system
+- [x] Create reusable modal/dialog system
+- [x] Create reusable toast/notification system
 
 ### Project Structure
 
