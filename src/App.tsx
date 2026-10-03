@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import AdminDashboardPage from './pages/AdminDashboardPage'
 import AdminJobsPage from './pages/AdminJobsPage'
+import AdminQuotesPage from './pages/AdminQuotesPage'
 import AdminReportsPage from './pages/AdminReportsPage'
 import AdminUsersPage from './pages/AdminUsersPage'
 import ApplicationShell from './layouts/ApplicationShell'
@@ -97,6 +98,7 @@ function App() {
               <Route element={<DashboardShell role="admin" />}>
                 <Route path="/admin" element={<AdminDashboardPage />} />
                 <Route path="/admin/users" element={<AdminUsersPage />} />
+                <Route path="/admin/quotes" element={<AdminQuotesPage />} />
                 <Route path="/admin/jobs" element={<AdminJobsPage />} />
                 <Route path="/admin/reports" element={<AdminReportsPage />} />
               </Route>

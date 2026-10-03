@@ -745,10 +745,10 @@ PHASE 18 → Post-MVP features
 
 ### Admin Overview
 
-- [ ] Create admin dashboard
-- [ ] Display user count
-- [ ] Display professional count
-- [ ] Display client count
+- [x] Create admin dashboard
+- [x] Display user count
+- [x] Display professional count
+- [x] Display client count
 - [x] Display active jobs
 - [ ] Display pending applications
 - [ ] Display pending verifications
@@ -756,12 +756,12 @@ PHASE 18 → Post-MVP features
 
 ### User Management
 
-- [ ] Search users
-- [ ] View user
+- [x] Search users
+- [x] View user
 - [ ] Edit user
 - [ ] Suspend user
 - [ ] Reactivate user
-- [ ] Delete user where appropriate
+- [x] Delete user where appropriate
 - [ ] Change role where authorized
 
 ### Marketplace Management

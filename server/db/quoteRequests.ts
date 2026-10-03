@@ -29,6 +29,29 @@ export type QuoteRequestRecord = {
   updatedAt: string
 }
 
+export type AdminQuoteListFilters = {
+  search?: string
+  status?: QuoteRequestStatus
+  clientUserId?: string
+  professionalId?: string
+  professionalLocation?: string
+  minBudget?: number
+  maxBudget?: number
+  preferredDateFrom?: string
+  preferredDateTo?: string
+  sort?: 'newest' | 'oldest' | 'budget-high' | 'budget-low' | 'date-asc' | 'date-desc'
+  page: number
+  limit: number
+}
+
+export type AdminQuoteListResult = {
+  quotes: QuoteRequestRecord[]
+  page: number
+  limit: number
+  total: number
+  totalPages: number
+}
+
 type QuoteRequestRow = Record<string, unknown>
 
 function toQuoteRequest(row: QuoteRequestRow): QuoteRequestRecord {
@@ -172,4 +195,136 @@ export function listQuoteRequestsForClient(
     )
     .all(clientUserId)
     .map((row) => toQuoteRequest(row))
+}
+
+export function listAdminQuoteRequests(
+  filters: AdminQuoteListFilters,
+): AdminQuoteListResult {
+  const where: string[] = []
+  const params: Array<string | number> = []
+
+  if (filters.status) {
+    where.push('qr.status = ?')
+    params.push(filters.status)
+  }
+
+  if (filters.clientUserId) {
+    where.push('qr.client_user_id = ?')
+    params.push(filters.clientUserId)
+  }
+
+  if (filters.professionalId) {
+    where.push('qr.professional_id = ?')
+    params.push(filters.professionalId)
+  }
+
+  if (filters.professionalLocation) {
+    where.push('p.location LIKE ?')
+    params.push(`%${filters.professionalLocation}%`)
+  }
+
+  if (filters.search) {
+    where.push(`(
+      qr.title LIKE ?
+      OR qr.description LIKE ?
+      OR qr.location LIKE ?
+      OR client.full_name LIKE ?
+      OR client.email LIKE ?
+      OR pro.full_name LIKE ?
+      OR p.business_name LIKE ?
+      OR p.location LIKE ?
+    )`)
+
+    const search = `%${filters.search}%`
+    params.push(
+      search,
+      search,
+      search,
+      search,
+      search,
+      search,
+      search,
+      search,
+    )
+  }
+
+  if (filters.minBudget !== undefined) {
+    where.push('qr.budget IS NOT NULL AND qr.budget >= ?')
+    params.push(filters.minBudget)
+  }
+
+  if (filters.maxBudget !== undefined) {
+    where.push('qr.budget IS NOT NULL AND qr.budget <= ?')
+    params.push(filters.maxBudget)
+  }
+
+  if (filters.preferredDateFrom) {
+    where.push(
+      'qr.preferred_date IS NOT NULL AND qr.preferred_date >= ?',
+    )
+    params.push(filters.preferredDateFrom)
+  }
+
+  if (filters.preferredDateTo) {
+    where.push(
+      'qr.preferred_date IS NOT NULL AND qr.preferred_date <= ?',
+    )
+    params.push(filters.preferredDateTo)
+  }
+
+  const whereSql = where.length > 0 ? `WHERE ${where.join(' AND ')}` : ''
+
+  const countRow = db
+    .prepare(
+      `
+        SELECT COUNT(*) AS count
+        FROM quote_requests qr
+        JOIN users client ON client.id = qr.client_user_id
+        JOIN professionals p ON p.id = qr.professional_id
+        JOIN users pro ON pro.id = p.user_id
+        ${whereSql}
+      `,
+    )
+    .get(...params) as Record<string, unknown>
+
+  const total = Number(countRow.count)
+  const totalPages = Math.max(1, Math.ceil(total / filters.limit))
+  const page = Math.min(Math.max(filters.page, 1), totalPages)
+  const offset = (page - 1) * filters.limit
+
+  const orderBy =
+    filters.sort === 'oldest'
+      ? 'qr.created_at ASC'
+      : filters.sort === 'budget-high'
+        ? 'qr.budget DESC NULLS LAST, qr.created_at DESC'
+        : filters.sort === 'budget-low'
+          ? 'qr.budget ASC NULLS LAST, qr.created_at DESC'
+          : filters.sort === 'date-asc'
+            ? 'qr.preferred_date ASC NULLS LAST, qr.created_at DESC'
+            : filters.sort === 'date-desc'
+              ? 'qr.preferred_date DESC NULLS LAST, qr.created_at DESC'
+              : 'qr.created_at DESC'
+
+  const rows = db
+    .prepare(
+      `
+        ${requestSelect}
+        ${whereSql}
+        ORDER BY ${orderBy}
+        LIMIT ? OFFSET ?
+      `,
+    )
+    .all(...params, filters.limit, offset) as QuoteRequestRow[]
+
+  return {
+    quotes: rows.map(toQuoteRequest),
+    page,
+    limit: filters.limit,
+    total,
+    totalPages,
+  }
+}
+
+export function deleteQuoteRequestById(id: string): void {
+  db.prepare('DELETE FROM quote_requests WHERE id = ?').run(id)
 }
