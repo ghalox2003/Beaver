@@ -44,11 +44,12 @@ What exists today:
 - Landing page (`src/pages/LandingPage.tsx`), responsive, with mobile nav.
 - Routing, role-based route structure, shells and reusable UI states.
 - Login and signup forms (frontend only for now, not yet connected to the API).
+- Auth API (`/api/auth/signup`, `login`, `logout`, `me`) with hashed passwords, cookie sessions, rate limiting and server-side role checks (`requireRole`).
 - Express API skeleton in `server/` with a health endpoint (`/api/health`).
 - SQLite dev database with migrations, `users` and `sessions` tables, scrypt password hashing and a seed script.
 - Project structure and conventions (see `CONVENTIONS.md`).
 
-What does not exist yet: real authentication endpoints, marketplace, map, jobs.
+What does not exist yet: frontend connected to the auth API, marketplace, map, jobs.
 
 Run locally (two terminals):
 
@@ -333,7 +334,7 @@ PHASE 18 → Post-MVP features
 - [ ] Create logout functionality
 - [ ] Create password reset flow
 - [ ] Create email verification flow
-- [ ] Create session handling
+- [x] Create session handling
 - [ ] Persist authenticated user
 - [ ] Handle authentication errors
 - [ ] Handle expired sessions
@@ -343,9 +344,9 @@ PHASE 18 → Post-MVP features
 - [x] Add Client role
 - [x] Add Professional role
 - [x] Add Admin role
-- [ ] Store user role in database
+- [x] Store user role in database
 - [x] Restrict routes according to role
-- [ ] Prevent unauthorized API access
+- [x] Prevent unauthorized API access
 - [x] Redirect users to the correct dashboard
 
 ### Authentication UX
@@ -909,17 +910,17 @@ PHASE 18 → Post-MVP features
 
 ### Authentication Security
 
-- [ ] Hash passwords securely
-- [ ] Protect sessions
-- [ ] Validate authentication server-side
-- [ ] Protect privileged routes
-- [ ] Prevent privilege escalation
+- [x] Hash passwords securely
+- [x] Protect sessions
+- [x] Validate authentication server-side
+- [x] Protect privileged routes
+- [x] Prevent privilege escalation
 - [ ] Implement secure password reset
 
 ### Authorization
 
 - [ ] Verify ownership of resources
-- [ ] Verify user roles server-side
+- [x] Verify user roles server-side
 - [ ] Protect admin functionality
 - [ ] Protect private messages
 - [ ] Protect private documents
