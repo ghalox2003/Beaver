@@ -23,72 +23,75 @@ import ProfessionalProfilePage from './pages/ProfessionalProfilePage'
 import ProfessionalsPage from './pages/ProfessionalsPage'
 import ProtectedRoute from './components/ProtectedRoute'
 import SignupPage from './pages/SignupPage'
+import { AuthProvider } from './features/auth'
 
 function App() {
   return (
     <BrowserRouter>
-      <Routes>
-        <Route element={<ApplicationShell />}>
-          <Route path="/" element={<LandingPage />} />
+      <AuthProvider>
+        <Routes>
+          <Route element={<ApplicationShell />}>
+            <Route path="/" element={<LandingPage />} />
 
-          <Route path="/marketplace" element={<MarketplacePage />} />
-          <Route path="/professionals" element={<ProfessionalsPage />} />
-          <Route path="/jobs" element={<JobsPage />} />
+            <Route path="/marketplace" element={<MarketplacePage />} />
+            <Route path="/professionals" element={<ProfessionalsPage />} />
+            <Route path="/jobs" element={<JobsPage />} />
 
-          <Route element={<AuthShell />}>
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/signup" element={<SignupPage />} />
-            <Route
-              path="/forgot-password"
-              element={<ForgotPasswordPage />}
-            />
-          </Route>
-
-          <Route element={<ProtectedRoute allowedRoles={['client']} />}>
-            <Route element={<DashboardShell role="client" />}>
-              <Route path="/client" element={<ClientDashboardPage />} />
-              <Route path="/client/jobs" element={<ClientJobsPage />} />
-              <Route path="/client/jobs/new" element={<NewJobPage />} />
+            <Route element={<AuthShell />}>
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/signup" element={<SignupPage />} />
               <Route
-                path="/client/professionals"
-                element={<ClientProfessionalsPage />}
+                path="/forgot-password"
+                element={<ForgotPasswordPage />}
               />
             </Route>
-          </Route>
 
-          <Route element={<ProtectedRoute allowedRoles={['professional']} />}>
-            <Route element={<DashboardShell role="professional" />}>
-              <Route
-                path="/professional"
-                element={<ProfessionalDashboardPage />}
-              />
-              <Route
-                path="/professional/jobs"
-                element={<ProfessionalJobsPage />}
-              />
-              <Route
-                path="/professional/applications"
-                element={<ProfessionalApplicationsPage />}
-              />
-              <Route
-                path="/professional/profile"
-                element={<ProfessionalProfilePage />}
-              />
+            <Route element={<ProtectedRoute allowedRoles={['client']} />}>
+              <Route element={<DashboardShell role="client" />}>
+                <Route path="/client" element={<ClientDashboardPage />} />
+                <Route path="/client/jobs" element={<ClientJobsPage />} />
+                <Route path="/client/jobs/new" element={<NewJobPage />} />
+                <Route
+                  path="/client/professionals"
+                  element={<ClientProfessionalsPage />}
+                />
+              </Route>
             </Route>
-          </Route>
 
-          <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
-            <Route element={<DashboardShell role="admin" />}>
-              <Route path="/admin" element={<AdminDashboardPage />} />
-              <Route path="/admin/users" element={<AdminUsersPage />} />
-              <Route path="/admin/jobs" element={<AdminJobsPage />} />
-              <Route path="/admin/reports" element={<AdminReportsPage />} />
+            <Route element={<ProtectedRoute allowedRoles={['professional']} />}>
+              <Route element={<DashboardShell role="professional" />}>
+                <Route
+                  path="/professional"
+                  element={<ProfessionalDashboardPage />}
+                />
+                <Route
+                  path="/professional/jobs"
+                  element={<ProfessionalJobsPage />}
+                />
+                <Route
+                  path="/professional/applications"
+                  element={<ProfessionalApplicationsPage />}
+                />
+                <Route
+                  path="/professional/profile"
+                  element={<ProfessionalProfilePage />}
+                />
+              </Route>
             </Route>
-          </Route>
 
-          <Route path="*" element={<NotFoundPage />} />
-        </Route>
-      </Routes>
+            <Route element={<ProtectedRoute allowedRoles={['admin']} />}>
+              <Route element={<DashboardShell role="admin" />}>
+                <Route path="/admin" element={<AdminDashboardPage />} />
+                <Route path="/admin/users" element={<AdminUsersPage />} />
+                <Route path="/admin/jobs" element={<AdminJobsPage />} />
+                <Route path="/admin/reports" element={<AdminReportsPage />} />
+              </Route>
+            </Route>
+
+            <Route path="*" element={<NotFoundPage />} />
+          </Route>
+        </Routes>
+      </AuthProvider>
     </BrowserRouter>
   )
 }

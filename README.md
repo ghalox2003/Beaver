@@ -331,13 +331,13 @@ PHASE 18 → Post-MVP features
 
 - [x] Create signup page
 - [x] Create login page
-- [ ] Create logout functionality
+- [x] Create logout functionality
 - [ ] Create password reset flow
 - [ ] Create email verification flow
 - [x] Create session handling
-- [ ] Persist authenticated user
-- [ ] Handle authentication errors
-- [ ] Handle expired sessions
+- [x] Persist authenticated user
+- [x] Handle authentication errors
+- [x] Handle expired sessions
 
 ### User Roles
 

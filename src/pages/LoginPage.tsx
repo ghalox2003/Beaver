@@ -1,18 +1,33 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { Eye, EyeOff, LoaderCircle } from 'lucide-react'
-import { Link, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom'
+import { dashboardPathForRole, useAuth } from '../features/auth'
+import { ApiError } from '../lib/api'
+import type { FieldErrors } from '../lib/api'
 
-type UserRole = 'client' | 'professional' | 'admin'
+type LocationState = { from?: { pathname?: string } } | null
+
+const inputClass =
+  'w-full rounded-2xl border border-forest-900/10 bg-paper px-4 py-3.5 text-sm outline-none transition placeholder:text-forest-900/30 focus:border-forest-700 focus:ring-4 focus:ring-sage/25 disabled:cursor-not-allowed disabled:opacity-60'
 
 function LoginPage() {
   const navigate = useNavigate()
+  const location = useLocation()
+  const { user, login, sessionExpired } = useAuth()
   const [error, setError] = useState('')
+  const [fieldErrors, setFieldErrors] = useState<FieldErrors>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
-  const [role, setRole] = useState<UserRole>('client')
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  const redirectTo = (location.state as LocationState)?.from?.pathname
+  const notice = sessionExpired
+    ? 'Your session expired. Please log in again.'
+    : redirectTo
+      ? 'Log in to continue.'
+      : ''
+
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
     const form = event.currentTarget
@@ -23,20 +38,31 @@ function LoginPage() {
       return
     }
 
+    const data = new FormData(form)
+
     setError('')
+    setFieldErrors({})
     setIsSubmitting(true)
 
-    // Temporary frontend-only authentication until the backend is connected.
-    localStorage.setItem('beaver:authenticated', 'true')
-    localStorage.setItem('beaver:role', role)
-
-    const dashboardByRole: Record<UserRole, string> = {
-      client: '/client',
-      professional: '/professional',
-      admin: '/admin',
+    try {
+      const current = await login({
+        email: String(data.get('email') ?? '').trim(),
+        password: String(data.get('password') ?? ''),
+      })
+      navigate(redirectTo ?? dashboardPathForRole(current.role), { replace: true })
+    } catch (caught) {
+      if (caught instanceof ApiError) {
+        setError(caught.message)
+        setFieldErrors(caught.fields)
+      } else {
+        setError('Something went wrong. Please try again.')
+      }
+      setIsSubmitting(false)
     }
+  }
 
-    navigate(dashboardByRole[role], { replace: true })
+  if (user && !isSubmitting) {
+    return <Navigate to={dashboardPathForRole(user.role)} replace />
   }
 
   return (
@@ -55,31 +81,35 @@ function LoginPage() {
         </p>
       </div>
 
-      <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
+      {notice && (
+        <p className="mt-6 rounded-2xl bg-sage/25 px-4 py-3 text-sm font-medium text-forest-900">
+          {notice}
+        </p>
+      )}
+
+      <form className="mt-8 space-y-5" onSubmit={handleSubmit} noValidate={false}>
         <div>
-          <label
-            htmlFor="login-email"
-            className="mb-2 block text-sm font-bold"
-          >
+          <label htmlFor="login-email" className="mb-2 block text-sm font-bold">
             Email address
           </label>
           <input
             id="login-email"
             name="email"
             type="email"
+            autoComplete="email"
             required
             disabled={isSubmitting}
             placeholder="you@example.com"
-            className="w-full rounded-2xl border border-forest-900/10 bg-paper px-4 py-3.5 text-sm outline-none transition placeholder:text-forest-900/30 focus:border-forest-700 focus:ring-4 focus:ring-sage/25 disabled:cursor-not-allowed disabled:opacity-60"
+            className={inputClass}
           />
+          {fieldErrors.email && (
+            <p className="mt-2 text-sm font-medium text-red-700">{fieldErrors.email}</p>
+          )}
         </div>
 
         <div>
           <div className="mb-2 flex items-center justify-between gap-4">
-            <label
-              htmlFor="login-password"
-              className="block text-sm font-bold"
-            >
+            <label htmlFor="login-password" className="block text-sm font-bold">
               Password
             </label>
 
@@ -96,10 +126,11 @@ function LoginPage() {
               id="login-password"
               name="password"
               type={showPassword ? 'text' : 'password'}
+              autoComplete="current-password"
               required
               disabled={isSubmitting}
               placeholder="Enter your password"
-              className="w-full rounded-2xl border border-forest-900/10 bg-paper px-4 py-3.5 pr-12 text-sm outline-none transition placeholder:text-forest-900/30 focus:border-forest-700 focus:ring-4 focus:ring-sage/25 disabled:cursor-not-allowed disabled:opacity-60"
+              className={`${inputClass} pr-12`}
             />
 
             <button
@@ -112,60 +143,13 @@ function LoginPage() {
               {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
             </button>
           </div>
+          {fieldErrors.password && (
+            <p className="mt-2 text-sm font-medium text-red-700">{fieldErrors.password}</p>
+          )}
         </div>
 
-        <fieldset disabled={isSubmitting}>
-          <legend className="mb-2 block text-sm font-bold">
-            Log in as
-          </legend>
-
-          <div className="grid grid-cols-3 gap-3">
-            <label className="cursor-pointer rounded-2xl border border-forest-900/10 bg-paper p-3 transition has-[:checked]:border-forest-700 has-[:checked]:bg-sage/20">
-              <input
-                type="radio"
-                name="role"
-                value="client"
-                checked={role === 'client'}
-                onChange={() => setRole('client')}
-                className="sr-only"
-              />
-              <span className="block text-center text-sm font-bold">
-                Client
-              </span>
-            </label>
-
-            <label className="cursor-pointer rounded-2xl border border-forest-900/10 bg-paper p-3 transition has-[:checked]:border-forest-700 has-[:checked]:bg-sage/20">
-              <input
-                type="radio"
-                name="role"
-                value="professional"
-                checked={role === 'professional'}
-                onChange={() => setRole('professional')}
-                className="sr-only"
-              />
-              <span className="block text-center text-sm font-bold">
-                Professional
-              </span>
-            </label>
-
-            <label className="cursor-pointer rounded-2xl border border-forest-900/10 bg-paper p-3 transition has-[:checked]:border-forest-700 has-[:checked]:bg-sage/20">
-              <input
-                type="radio"
-                name="role"
-                value="admin"
-                checked={role === 'admin'}
-                onChange={() => setRole('admin')}
-                className="sr-only"
-              />
-              <span className="block text-center text-sm font-bold">
-                Admin
-              </span>
-            </label>
-          </div>
-        </fieldset>
-
         {error && (
-          <p className="rounded-2xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
+          <p role="alert" className="rounded-2xl bg-red-50 px-4 py-3 text-sm font-medium text-red-700">
             {error}
           </p>
         )}

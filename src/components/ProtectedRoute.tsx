@@ -1,6 +1,7 @@
+import { LoaderCircle } from 'lucide-react'
 import { Navigate, Outlet, useLocation } from 'react-router-dom'
-
-type UserRole = 'client' | 'professional' | 'admin'
+import { dashboardPathForRole, useAuth } from '../features/auth'
+import type { UserRole } from '../features/auth'
 
 type ProtectedRouteProps = {
   allowedRoles?: UserRole[]
@@ -8,16 +9,26 @@ type ProtectedRouteProps = {
 
 function ProtectedRoute({ allowedRoles }: ProtectedRouteProps) {
   const location = useLocation()
-  const isAuthenticated =
-    localStorage.getItem('beaver:authenticated') === 'true'
-  const role = localStorage.getItem('beaver:role') as UserRole | null
+  const { user, status } = useAuth()
 
-  if (!isAuthenticated) {
+  if (status === 'loading') {
+    return (
+      <div
+        role="status"
+        aria-label="Loading"
+        className="flex min-h-screen items-center justify-center bg-cream text-forest-700"
+      >
+        <LoaderCircle className="animate-spin" size={28} />
+      </div>
+    )
+  }
+
+  if (!user) {
     return <Navigate to="/login" replace state={{ from: location }} />
   }
 
-  if (allowedRoles && (!role || !allowedRoles.includes(role))) {
-    return <Navigate to="/" replace />
+  if (allowedRoles && !allowedRoles.includes(user.role)) {
+    return <Navigate to={dashboardPathForRole(user.role)} replace />
   }
 
   return <Outlet />

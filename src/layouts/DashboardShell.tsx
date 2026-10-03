@@ -1,6 +1,7 @@
 import {
   BriefcaseBusiness,
   LayoutDashboard,
+  LogOut,
   Menu,
   Search,
   Settings,
@@ -9,7 +10,8 @@ import {
   X,
 } from 'lucide-react'
 import { useState } from 'react'
-import { Link, NavLink, Outlet } from 'react-router-dom'
+import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
+import { useAuth } from '../features/auth'
 
 type DashboardShellProps = {
   role: 'client' | 'professional' | 'admin'
@@ -47,6 +49,14 @@ const roleLabels = {
 
 function DashboardShell({ role }: DashboardShellProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
+  const navigate = useNavigate()
+  const { user, logout } = useAuth()
+
+  async function handleLogout() {
+    setMobileOpen(false)
+    navigate('/', { replace: true })
+    await logout()
+  }
 
   const items = navigation[role]
 
@@ -89,7 +99,8 @@ function DashboardShell({ role }: DashboardShellProps) {
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-forest-700">
             Account
           </p>
-          <p className="mt-1 font-bold">{roleLabels[role]}</p>
+          <p className="mt-1 truncate font-bold">{user?.fullName ?? roleLabels[role]}</p>
+          <p className="truncate text-xs text-forest-900/50">{user?.email ?? roleLabels[role]}</p>
         </div>
 
         <nav className="mt-8 flex flex-1 flex-col gap-1">
@@ -112,6 +123,15 @@ function DashboardShell({ role }: DashboardShellProps) {
             </NavLink>
           ))}
         </nav>
+
+        <button
+          type="button"
+          onClick={handleLogout}
+          className="flex items-center gap-3 rounded-xl px-4 py-3 text-sm font-semibold text-forest-900/65 hover:bg-cream hover:text-forest-900"
+        >
+          <LogOut size={18} />
+          Log out
+        </button>
 
         <Link
           to="/"

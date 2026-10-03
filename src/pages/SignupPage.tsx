@@ -1,7 +1,9 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { Check, Eye, EyeOff, LoaderCircle } from 'lucide-react'
-import { Link } from 'react-router-dom'
+import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { dashboardPathForRole, useAuth } from '../features/auth'
+import { ApiError } from '../lib/api'
 
 type PasswordRequirement = {
   label: string
@@ -32,6 +34,8 @@ const passwordRequirements: PasswordRequirement[] = [
 ]
 
 function SignupPage() {
+  const navigate = useNavigate()
+  const { user, signup } = useAuth()
   const [error, setError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
@@ -41,7 +45,7 @@ function SignupPage() {
     requirement.test(password),
   )
 
-  function handleSubmit(event: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault()
 
     const form = event.currentTarget
@@ -57,11 +61,32 @@ function SignupPage() {
       return
     }
 
+    const data = new FormData(form)
+    const role = data.get('role') === 'professional' ? 'professional' : 'client'
+
     setError('')
     setIsSubmitting(true)
 
-    // Account creation will be connected to the backend later.
-    setIsSubmitting(false)
+    try {
+      const created = await signup({
+        fullName: String(data.get('name') ?? '').trim(),
+        email: String(data.get('email') ?? '').trim(),
+        password,
+        role,
+      })
+      navigate(dashboardPathForRole(created.role), { replace: true })
+    } catch (caught) {
+      if (caught instanceof ApiError) {
+        setError(Object.values(caught.fields)[0] ?? caught.message)
+      } else {
+        setError('Something went wrong. Please try again.')
+      }
+      setIsSubmitting(false)
+    }
+  }
+
+  if (user && !isSubmitting) {
+    return <Navigate to={dashboardPathForRole(user.role)} replace />
   }
 
   return (
