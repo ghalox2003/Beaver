@@ -8,8 +8,10 @@
     "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "dev:server": "tsx watch --env-file-if-exists=.env server/index.ts",
-    "start:server": "tsx --env-file-if-exists=.env server/index.ts"
+    "dev:server": "tsx watch --disable-warning=ExperimentalWarning --env-file-if-exists=.env server/index.ts",
+    "start:server": "tsx --disable-warning=ExperimentalWarning --env-file-if-exists=.env server/index.ts",
+    "db:migrate": "tsx --disable-warning=ExperimentalWarning --env-file-if-exists=.env server/scripts/migrate.ts",
+    "db:seed": "tsx --disable-warning=ExperimentalWarning --env-file-if-exists=.env server/scripts/seed.ts"
   },
   "dependencies": {
     "express": "^5.2.1",

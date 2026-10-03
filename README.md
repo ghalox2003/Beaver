@@ -45,14 +45,16 @@ What exists today:
 - Routing, role-based route structure, shells and reusable UI states.
 - Login and signup forms (frontend only for now, not yet connected to the API).
 - Express API skeleton in `server/` with a health endpoint (`/api/health`).
+- SQLite dev database with migrations, `users` and `sessions` tables, scrypt password hashing and a seed script.
 - Project structure and conventions (see `CONVENTIONS.md`).
 
-What does not exist yet: real authentication, database, marketplace, map, jobs.
+What does not exist yet: real authentication endpoints, marketplace, map, jobs.
 
 Run locally (two terminals):
 
     npm install
     cp .env.example .env
+    npm run db:seed      # creates the demo accounts (set SEED_PASSWORD in .env first)
     npm run dev:server   # API on http://localhost:3001
     npm run dev          # frontend on http://localhost:5173, proxies /api to the API
 
@@ -362,18 +364,18 @@ PHASE 18 → Post-MVP features
 ### Database Foundation
 
 - [ ] Choose production database
-- [ ] Configure database connection
+- [x] Configure database connection
 - [ ] Create database schema
-- [ ] Create migrations
-- [ ] Configure development database
+- [x] Create migrations
+- [x] Configure development database
 - [ ] Configure production database
-- [ ] Create seed data
-- [ ] Create database utilities
-- [ ] Create server-side database access layer
+- [x] Create seed data
+- [x] Create database utilities
+- [x] Create server-side database access layer
 
 ### Core Entities
 
-- [ ] Create Users table
+- [x] Create Users table
 - [ ] Create Clients table
 - [ ] Create Professionals table
 - [ ] Create Trades table
