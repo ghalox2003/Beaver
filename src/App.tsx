@@ -21,6 +21,7 @@ import ProfessionalDashboardPage from './pages/ProfessionalDashboardPage'
 import ProfessionalJobsPage from './pages/ProfessionalJobsPage'
 import ProfessionalProfilePage from './pages/ProfessionalProfilePage'
 import PublicProfessionalProfilePage from './pages/PublicProfessionalProfilePage'
+import ProfessionalQuoteRequestPage from './pages/ProfessionalQuoteRequestPage'
 import ProfessionalsPage from './pages/ProfessionalsPage'
 import ProtectedRoute from './components/ProtectedRoute'
 import PublicShell from './layouts/PublicShell'
@@ -42,6 +43,10 @@ function App() {
               <Route
                 path="/professionals/:id"
                 element={<PublicProfessionalProfilePage />}
+              />
+              <Route
+                path="/professionals/:id/request"
+                element={<ProfessionalQuoteRequestPage />}
               />
               <Route path="/jobs" element={<JobsPage />} />
             </Route>

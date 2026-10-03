@@ -191,23 +191,30 @@ function PublicProfessionalProfilePage() {
 
           <aside className="h-fit rounded-3xl border border-forest-900/10 bg-forest-900 p-6 text-paper shadow-sm">
             <p className="text-xs font-bold uppercase tracking-[0.16em] text-sage">
-              Interested?
+              Work with {professional.businessName}
             </p>
             <h2 className="mt-2 text-2xl font-extrabold">
-              Start with the right professional.
+              Ready to get the job done?
             </h2>
             <p className="mt-3 text-sm leading-6 text-paper/65">
-              Job posting and application workflows are being connected next.
-              For now, this profile gives you the professional's verified
-              marketplace information and service area.
+              Tell this professional what you need and send a quote request
+              directly through Beaver.
             </p>
+
+            <Link
+              to={`/professionals/${professional.id}/request`}
+              className="mt-6 flex items-center justify-center gap-2 rounded-2xl bg-sage px-4 py-3.5 text-sm font-extrabold !text-forest-950 transition hover:brightness-105"
+            >
+              Request a quote
+              <ArrowUpRight className="size-4" />
+            </Link>
 
             {professional.website && (
               <a
                 href={professional.website}
                 target="_blank"
                 rel="noreferrer"
-                className="mt-6 flex items-center justify-between rounded-2xl bg-paper/10 px-4 py-3 text-sm font-bold !text-paper transition hover:bg-paper/15"
+                className="mt-3 flex items-center justify-between rounded-2xl bg-paper/10 px-4 py-3 text-sm font-bold !text-paper transition hover:bg-paper/15"
               >
                 <span className="flex items-center gap-2">
                   <Globe className="size-4" />
@@ -217,12 +224,13 @@ function PublicProfessionalProfilePage() {
               </a>
             )}
 
-            <Link
-              to="/jobs"
-              className="mt-3 flex items-center justify-center rounded-2xl bg-sage px-4 py-3 text-sm font-extrabold !text-forest-950 transition hover:brightness-105"
-            >
-              Browse open jobs
-            </Link>
+            <div className="mt-5 flex items-start gap-3 border-t border-paper/10 pt-5">
+              <ShieldCheck className="mt-0.5 size-5 shrink-0 text-sage" />
+              <p className="text-xs leading-5 text-paper/55">
+                Beaver keeps the professional information and request flow in
+                one place so clients can start with confidence.
+              </p>
+            </div>
           </aside>
         </div>
       </PageContainer>

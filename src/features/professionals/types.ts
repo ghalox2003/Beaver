@@ -36,3 +36,31 @@ export type ProfessionalFilters = {
   minServiceRadius?: number
   sort?: string
 }
+
+export type CurrencyCode = 'CAD' | 'EUR' | 'MAD' | 'GBP'
+
+export type QuoteRequestStatus =
+  | 'pending'
+  | 'accepted'
+  | 'declined'
+  | 'cancelled'
+  | 'completed'
+
+export type QuoteRequest = {
+  id: string
+  clientUserId: string
+  clientName: string
+  clientEmail: string
+  professionalId: string
+  professionalName: string
+  businessName: string
+  title: string
+  description: string
+  location: string
+  preferredDate: string | null
+  budget: number | null
+  currency: CurrencyCode
+  status: QuoteRequestStatus
+  createdAt: string
+  updatedAt: string
+}

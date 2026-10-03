@@ -185,6 +185,22 @@ export function findProfessionalById(id: string): ProfessionalRecord | null {
   return row ? toProfessional(row) : null
 }
 
+export function findProfessionalByUserId(
+  userId: string,
+): ProfessionalRecord | null {
+  const row = db
+    .prepare(
+      `
+        ${professionalSelect}
+        AND p.user_id = ?
+        LIMIT 1
+      `,
+    )
+    .get(userId)
+
+  return row ? toProfessional(row) : null
+}
+
 export function createTrade(input: {
   id: string
   name: string

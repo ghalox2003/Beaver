@@ -4,6 +4,7 @@ import { adminRouter } from './routes/admin.ts'
 import { authRouter } from './routes/auth.ts'
 import { healthRouter } from './routes/health.ts'
 import { marketplaceRouter } from './routes/marketplace.ts'
+import { quoteRequestsRouter } from './routes/quoteRequests.ts'
 
 export function createApp() {
   const app = express()
@@ -22,6 +23,7 @@ export function createApp() {
   app.use('/api/auth', authRouter)
   app.use('/api/admin', adminRouter)
   app.use('/api', marketplaceRouter)
+  app.use('/api/quote-requests', quoteRequestsRouter)
 
   app.use('/api', (_req, res) => {
     res.status(404).json({ error: 'Not found' })
