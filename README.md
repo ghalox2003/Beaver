@@ -38,12 +38,12 @@ Payments are deliberately postponed until after the core marketplace works.
 
 # Project state
 
-Current phase: Phases 0 to 2 complete, Phase 3 (authentication) in progress with a real backend being added.
+Current phase: Phases 0 to 4 complete; Phases 5 to 7 are in progress with the professional marketplace and interactive map implemented.
 
 What exists today:
 - Landing page (`src/pages/LandingPage.tsx`), responsive, with mobile nav.
 - Routing, role-based route structure, shells and reusable UI states.
-- Login and signup forms (frontend only for now, not yet connected to the API).
+- Login and signup forms connected to the real authentication API.
 - Auth API (`/api/auth/signup`, `login`, `logout`, `me`) with hashed passwords, cookie sessions, rate limiting and server-side role checks (`requireRole`).
 - Express API skeleton in `server/` with a health endpoint (`/api/health`).
 - SQLite dev database with migrations, `users` and `sessions` tables, scrypt password hashing and a seed script.
@@ -366,7 +366,7 @@ PHASE 18 → Post-MVP features
 
 - [ ] Choose production database
 - [x] Configure database connection
-- [ ] Create database schema
+- [x] Create database schema
 - [x] Create migrations
 - [x] Configure development database
 - [ ] Configure production database
@@ -378,8 +378,8 @@ PHASE 18 → Post-MVP features
 
 - [x] Create Users table
 - [ ] Create Clients table
-- [ ] Create Professionals table
-- [ ] Create Trades table
+- [x] Create Professionals table
+- [x] Create Trades table
 - [ ] Create Jobs table
 - [ ] Create Applications table
 - [ ] Create Reviews table
@@ -393,9 +393,9 @@ PHASE 18 → Post-MVP features
 ### Relationships
 
 - [ ] User → Client relationship
-- [ ] User → Professional relationship
-- [ ] Professional → Trade relationship
-- [ ] Professional → Location relationship
+- [x] User → Professional relationship
+- [x] Professional → Trade relationship
+- [x] Professional → Location relationship
 - [ ] Client → Jobs relationship
 - [ ] Job → Trade relationship
 - [ ] Job → Applications relationship
@@ -436,7 +436,7 @@ PHASE 18 → Post-MVP features
 - [ ] Add website
 - [ ] Add availability
 - [ ] Add profile editing
-- [ ] Add profile preview
+- [x] Add profile preview
 
 ### Profile Quality
 
@@ -451,29 +451,29 @@ PHASE 18 → Post-MVP features
 
 ### Professional Listings
 
-- [ ] Create professional marketplace page
-- [ ] Display professional cards
-- [ ] Display professional name
-- [ ] Display trade
-- [ ] Display location
+- [x] Create professional marketplace page
+- [x] Display professional cards
+- [x] Display professional name
+- [x] Display trade
+- [x] Display location
 - [ ] Display rating
 - [ ] Display review count
-- [ ] Display verification status
+- [x] Display verification status
 - [ ] Display badges
-- [ ] Display availability
-- [ ] Display service radius
-- [ ] Add professional profile page
+- [x] Display availability
+- [x] Display service radius
+- [x] Add professional profile page
 
 ### Professional Discovery
 
-- [ ] Search professionals
-- [ ] Filter by trade
-- [ ] Filter by location
-- [ ] Filter by service radius
+- [x] Search professionals
+- [x] Filter by trade
+- [x] Filter by location
+- [x] Filter by service radius
 - [ ] Filter by rating
-- [ ] Filter by verification
-- [ ] Filter by availability
-- [ ] Sort results
+- [x] Filter by verification
+- [x] Filter by availability
+- [x] Sort results
 - [ ] Add pagination/infinite scrolling
 
 ---
@@ -482,22 +482,22 @@ PHASE 18 → Post-MVP features
 
 ### Map Foundation
 
-- [ ] Configure Leaflet
-- [ ] Configure React Leaflet
+- [x] Configure Leaflet
+- [x] Configure React Leaflet
 - [ ] Create reusable map component
-- [ ] Add map container
-- [ ] Add zoom controls
-- [ ] Add location markers
-- [ ] Add marker popups
+- [x] Add map container
+- [x] Add zoom controls
+- [x] Add location markers
+- [x] Add marker popups
 - [ ] Add map/list synchronized navigation
 
 ### Professional Map
 
-- [ ] Display professionals on map
+- [x] Display professionals on map
 - [ ] Cluster nearby professionals
-- [ ] Filter map markers
+- [x] Filter map markers
 - [ ] Select professional from marker
-- [ ] Open professional profile from marker
+- [x] Open professional profile from marker
 - [ ] Center map on selected professional
 
 ### Location
@@ -534,7 +534,7 @@ PHASE 18 → Post-MVP features
 - [ ] Create job marketplace
 - [ ] Display job cards
 - [ ] Display job location
-- [ ] Display trade
+- [x] Display trade
 - [ ] Display budget
 - [ ] Display deadline
 - [ ] Display posting date
@@ -788,7 +788,7 @@ PHASE 18 → Post-MVP features
 ### Global Search
 
 - [ ] Create search interface
-- [ ] Search professionals
+- [x] Search professionals
 - [ ] Search jobs
 - [ ] Search trades/services
 - [ ] Add search suggestions

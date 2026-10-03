@@ -20,6 +20,7 @@ import ProfessionalApplicationsPage from './pages/ProfessionalApplicationsPage'
 import ProfessionalDashboardPage from './pages/ProfessionalDashboardPage'
 import ProfessionalJobsPage from './pages/ProfessionalJobsPage'
 import ProfessionalProfilePage from './pages/ProfessionalProfilePage'
+import PublicProfessionalProfilePage from './pages/PublicProfessionalProfilePage'
 import ProfessionalsPage from './pages/ProfessionalsPage'
 import ProtectedRoute from './components/ProtectedRoute'
 import PublicShell from './layouts/PublicShell'
@@ -38,6 +39,10 @@ function App() {
               <Route path="/" element={<LandingPage />} />
               <Route path="/marketplace" element={<MarketplacePage />} />
               <Route path="/professionals" element={<ProfessionalsPage />} />
+              <Route
+                path="/professionals/:id"
+                element={<PublicProfessionalProfilePage />}
+              />
               <Route path="/jobs" element={<JobsPage />} />
             </Route>
 
