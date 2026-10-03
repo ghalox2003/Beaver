@@ -9,7 +9,7 @@ import {
   UserRound,
   X,
 } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { Link, NavLink, Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '../features/auth'
 
@@ -51,6 +51,42 @@ function DashboardShell({ role }: DashboardShellProps) {
   const [mobileOpen, setMobileOpen] = useState(false)
   const navigate = useNavigate()
   const { user, logout } = useAuth()
+  const [accountOpen, setAccountOpen] = useState(false)
+  const accountRef = useRef<HTMLDivElement>(null)
+  const initials =
+    (user?.fullName ?? '')
+      .split(/\s+/)
+      .map((part) => part.charAt(0))
+      .slice(0, 2)
+      .join('')
+      .toUpperCase() || 'U'
+  const searchPath = {
+    client: '/client/professionals',
+    professional: '/professional/jobs',
+    admin: '/admin/users',
+  }[role]
+
+  // Close the account menu on any outside click, or on Escape.
+  useEffect(() => {
+    if (!accountOpen) return
+
+    function handlePointerDown(event: PointerEvent) {
+      if (event.target instanceof Node && !accountRef.current?.contains(event.target)) {
+        setAccountOpen(false)
+      }
+    }
+
+    function handleKeyDown(event: KeyboardEvent) {
+      if (event.key === 'Escape') setAccountOpen(false)
+    }
+
+    document.addEventListener('pointerdown', handlePointerDown)
+    document.addEventListener('keydown', handleKeyDown)
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown)
+      document.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [accountOpen])
 
   async function handleLogout() {
     setMobileOpen(false)
@@ -161,21 +197,57 @@ function DashboardShell({ role }: DashboardShellProps) {
           </div>
 
           <div className="ml-auto flex items-center gap-3">
-            <button
-              type="button"
+            <Link
+              to={searchPath}
               aria-label="Search"
               className="rounded-full p-2.5 text-forest-900/60 hover:bg-forest-900/5 hover:text-forest-900"
             >
               <Search size={19} />
-            </button>
+            </Link>
 
-            <button
-              type="button"
-              className="flex h-10 w-10 items-center justify-center rounded-full bg-forest-900 text-sm font-bold text-white"
-              aria-label="Account"
-            >
-              <UserRound size={18} />
-            </button>
+            <div ref={accountRef} className="relative">
+              <button
+                type="button"
+                onClick={() => setAccountOpen((open) => !open)}
+                aria-label="Account menu"
+                aria-expanded={accountOpen}
+                className="flex h-10 w-10 items-center justify-center rounded-full bg-forest-900 text-sm font-bold text-white transition hover:scale-105"
+              >
+                {initials}
+              </button>
+
+              {accountOpen && (
+                <div className="absolute right-0 top-12 w-64 rounded-2xl border border-forest-900/10 bg-paper p-2 shadow-xl">
+                  <div className="px-3 py-2">
+                    <p className="truncate text-sm font-bold">{user?.fullName}</p>
+                    <p className="truncate text-xs text-forest-900/50">{user?.email}</p>
+                  </div>
+
+                  <div className="my-1 border-t border-forest-900/10" />
+
+                  <Link
+                    to="/"
+                    onClick={() => setAccountOpen(false)}
+                    className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold hover:bg-cream"
+                  >
+                    <Settings size={16} />
+                    Back to website
+                  </Link>
+
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setAccountOpen(false)
+                      void handleLogout()
+                    }}
+                    className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left text-sm font-semibold hover:bg-cream"
+                  >
+                    <LogOut size={16} />
+                    Log out
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
         </header>
 

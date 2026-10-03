@@ -22,6 +22,7 @@ import ProfessionalJobsPage from './pages/ProfessionalJobsPage'
 import ProfessionalProfilePage from './pages/ProfessionalProfilePage'
 import ProfessionalsPage from './pages/ProfessionalsPage'
 import ProtectedRoute from './components/ProtectedRoute'
+import PublicShell from './layouts/PublicShell'
 import SignupPage from './pages/SignupPage'
 import { AuthProvider } from './features/auth'
 
@@ -31,11 +32,14 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route element={<ApplicationShell />}>
-            <Route path="/" element={<LandingPage />} />
 
-            <Route path="/marketplace" element={<MarketplacePage />} />
-            <Route path="/professionals" element={<ProfessionalsPage />} />
-            <Route path="/jobs" element={<JobsPage />} />
+
+            <Route element={<PublicShell />}>
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/marketplace" element={<MarketplacePage />} />
+              <Route path="/professionals" element={<ProfessionalsPage />} />
+              <Route path="/jobs" element={<JobsPage />} />
+            </Route>
 
             <Route element={<AuthShell />}>
               <Route path="/login" element={<LoginPage />} />

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
 import { Check, Eye, EyeOff, LoaderCircle } from 'lucide-react'
-import { Link, Navigate, useNavigate } from 'react-router-dom'
+import { Link, Navigate, useNavigate, useSearchParams } from 'react-router-dom'
 import { dashboardPathForRole, useAuth } from '../features/auth'
 import { ApiError } from '../lib/api'
 
@@ -36,6 +36,8 @@ const passwordRequirements: PasswordRequirement[] = [
 function SignupPage() {
   const navigate = useNavigate()
   const { user, signup } = useAuth()
+  const [searchParams] = useSearchParams()
+  const initialRole = searchParams.get('role') === 'professional' ? 'professional' : 'client'
   const [error, setError] = useState('')
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
@@ -224,7 +226,7 @@ function SignupPage() {
                 name="role"
                 value="client"
                 required
-                defaultChecked
+                defaultChecked={initialRole === 'client'}
                 className="sr-only"
               />
               <span className="block text-sm font-bold">Client</span>
@@ -238,6 +240,7 @@ function SignupPage() {
                 type="radio"
                 name="role"
                 value="professional"
+                defaultChecked={initialRole === 'professional'}
                 className="sr-only"
               />
               <span className="block text-sm font-bold">Professional</span>

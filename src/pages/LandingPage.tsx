@@ -4,98 +4,25 @@ import {
   Check,
   ChevronDown,
   MapPin,
-  Menu,
   Search,
   ShieldCheck,
   Sparkles,
   Star,
   Wrench,
-  X,
 } from 'lucide-react'
-import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { dashboardPathForRole, useAuth } from '../features/auth'
 
 function LandingPage() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
+  const { user } = useAuth()
+  const dashboardPath = user ? dashboardPathForRole(user.role) : null
+  const postJobPath =
+    user?.role === 'client' ? '/client/jobs/new' : (dashboardPath ?? '/signup?role=client')
+  const joinPath = dashboardPath ?? '/signup?role=professional'
+  const getStartedPath = dashboardPath ?? '/signup'
 
   return (
     <div className="min-h-screen overflow-x-hidden bg-cream text-forest-900">
-      {/* Navigation */}
-      <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6 lg:px-8">
-        <nav className="mx-auto flex max-w-7xl items-center justify-between rounded-full border border-forest-900/10 bg-paper/90 px-4 py-3 shadow-lg shadow-forest-950/5 backdrop-blur-md sm:px-6">
-          <a href="#" className="flex items-center gap-2">
-            <div className="flex h-9 w-9 items-center justify-center rounded-full bg-forest-900 text-paper">
-              <Wrench size={18} strokeWidth={2.5} />
-            </div>
-            <span className="text-xl font-extrabold tracking-tight">beaver</span>
-          </a>
-
-          <div className="hidden items-center gap-8 text-sm font-medium md:flex">
-            <a className="transition-opacity hover:opacity-60" href="#how-it-works">
-              How it works
-            </a>
-            <a className="transition-opacity hover:opacity-60" href="#professionals">
-              Find a professional
-            </a>
-            <a className="transition-opacity hover:opacity-60" href="#for-pros">
-              For professionals
-            </a>
-          </div>
-
-          <div className="hidden items-center gap-3 md:flex">
-            <button className="px-4 py-2 text-sm font-semibold transition-opacity hover:opacity-60">
-              Log in
-            </button>
-            <button className="rounded-full bg-forest-900 px-5 py-2.5 text-sm font-semibold text-paper transition-transform hover:scale-[1.03]">
-              Get started
-            </button>
-          </div>
-
-          <button
-            className="rounded-full p-2 md:hidden"
-            onClick={() => setMobileMenuOpen((open) => !open)}
-            aria-label="Toggle menu"
-          >
-            {mobileMenuOpen ? <X size={22} /> : <Menu size={22} />}
-          </button>
-        </nav>
-
-        {mobileMenuOpen && (
-          <div className="mx-auto mt-2 max-w-7xl rounded-3xl border border-forest-900/10 bg-paper p-5 shadow-xl md:hidden">
-            <div className="flex flex-col gap-1">
-              <a
-                href="#how-it-works"
-                className="rounded-xl px-4 py-3 font-medium hover:bg-cream"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                How it works
-              </a>
-              <a
-                href="#professionals"
-                className="rounded-xl px-4 py-3 font-medium hover:bg-cream"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                Find a professional
-              </a>
-              <a
-                href="#for-pros"
-                className="rounded-xl px-4 py-3 font-medium hover:bg-cream"
-                onClick={() => setMobileMenuOpen(false)}
-              >
-                For professionals
-              </a>
-
-              <div className="mt-3 grid grid-cols-2 gap-2 border-t border-forest-900/10 pt-3">
-                <button className="rounded-xl px-4 py-3 text-sm font-semibold">
-                  Log in
-                </button>
-                <button className="rounded-xl bg-forest-900 px-4 py-3 text-sm font-semibold text-paper">
-                  Get started
-                </button>
-              </div>
-            </div>
-          </div>
-        )}
-      </header>
 
       {/* Hero */}
       <main>
@@ -121,17 +48,17 @@ function LandingPage() {
               </p>
 
               <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-                <button className="group inline-flex items-center justify-center gap-2 rounded-full bg-forest-900 px-6 py-3.5 font-semibold text-paper transition-all hover:-translate-y-0.5 hover:shadow-xl">
+                <Link to="/professionals" className="group inline-flex items-center justify-center gap-2 rounded-full bg-forest-900 px-6 py-3.5 font-semibold !text-paper transition-all hover:-translate-y-0.5 hover:shadow-xl">
                   Find a professional
                   <ArrowRight
                     size={17}
                     className="transition-transform group-hover:translate-x-1"
                   />
-                </button>
+                </Link>
 
-                <button className="inline-flex items-center justify-center gap-2 rounded-full border border-forest-900/15 bg-paper px-6 py-3.5 font-semibold transition-all hover:-translate-y-0.5 hover:bg-white">
+                <Link to={postJobPath} className="inline-flex items-center justify-center gap-2 rounded-full border border-forest-900/15 bg-paper px-6 py-3.5 font-semibold transition-all hover:-translate-y-0.5 hover:bg-white">
                   Post a job
-                </button>
+                </Link>
               </div>
 
               <div className="mt-10 flex flex-wrap items-center gap-x-7 gap-y-3 text-sm text-forest-900/60">
@@ -184,9 +111,10 @@ function LandingPage() {
                       ['Electrician', 'Find local professionals'],
                       ['Carpenter', 'Find local professionals'],
                     ].map(([trade, availability]) => (
-                      <div
+                      <Link
                         key={trade}
-                        className="flex items-center justify-between rounded-2xl border border-forest-900/8 bg-cream px-4 py-3"
+                        to={`/professionals?trade=${trade.toLowerCase()}`}
+                        className="flex items-center justify-between rounded-2xl border border-forest-900/8 bg-cream px-4 py-3 transition hover:bg-sage/30"
                       >
                         <div className="flex items-center gap-3">
                           <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-paper">
@@ -201,7 +129,7 @@ function LandingPage() {
                         </div>
 
                         <ArrowRight size={15} className="text-forest-900/40" />
-                      </div>
+                      </Link>
                     ))}
                   </div>
                 </div>
@@ -303,10 +231,10 @@ function LandingPage() {
                 Filter by trade, location, and the kind of work you need.
               </p>
 
-              <button className="mt-8 inline-flex items-center gap-2 rounded-full bg-paper px-6 py-3.5 font-semibold text-forest-900 transition-transform hover:-translate-y-0.5">
+              <Link to="/marketplace" className="mt-8 inline-flex items-center gap-2 rounded-full bg-paper px-6 py-3.5 font-semibold !text-forest-900 transition-transform hover:-translate-y-0.5">
                 Explore the marketplace
                 <ArrowRight size={17} />
-              </button>
+              </Link>
             </div>
 
             <div className="relative aspect-square overflow-hidden rounded-[2rem] bg-forest-800">
@@ -360,13 +288,13 @@ function LandingPage() {
                 </p>
               </div>
 
-              <button className="group inline-flex w-fit items-center gap-2 rounded-full bg-forest-900 px-6 py-3.5 font-semibold text-paper">
-                Join Beaver
+              <Link to={joinPath} className="group inline-flex w-fit items-center gap-2 rounded-full bg-forest-900 px-6 py-3.5 font-semibold !text-paper">
+                {user ? 'Go to your dashboard' : 'Join Beaver'}
                 <ArrowRight
                   size={17}
                   className="transition-transform group-hover:translate-x-1"
                 />
-              </button>
+              </Link>
             </div>
           </div>
         </section>
@@ -387,13 +315,13 @@ function LandingPage() {
               </p>
 
               <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-                <button className="rounded-full bg-forest-900 px-7 py-3.5 font-semibold text-paper">
-                  Get started
-                </button>
-                <button className="inline-flex items-center justify-center gap-2 rounded-full border border-forest-900/15 px-7 py-3.5 font-semibold">
+                <Link to={getStartedPath} className="rounded-full bg-forest-900 px-7 py-3.5 font-semibold !text-paper">
+                  {user ? 'Go to dashboard' : 'Get started'}
+                </Link>
+                <Link to="/#how-it-works" className="inline-flex items-center justify-center gap-2 rounded-full border border-forest-900/15 px-7 py-3.5 font-semibold">
                   Learn more
                   <ChevronDown size={16} />
-                </button>
+                </Link>
               </div>
             </div>
           </div>
