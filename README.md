@@ -38,19 +38,25 @@ Payments are deliberately postponed until after the core marketplace works.
 
 # Project state
 
-Current phase: Phase 0 complete, Phase 2 (application structure) next.
+Current phase: Phases 0 to 2 complete, Phase 3 (authentication) in progress with a real backend being added.
 
 What exists today:
 - Landing page (`src/pages/LandingPage.tsx`), responsive, with mobile nav.
+- Routing, role-based route structure, shells and reusable UI states.
+- Login and signup forms (frontend only for now, not yet connected to the API).
+- Express API skeleton in `server/` with a health endpoint (`/api/health`).
 - Project structure and conventions (see `CONVENTIONS.md`).
 
-What does not exist yet: routing, auth, database, marketplace, map, jobs.
+What does not exist yet: real authentication, database, marketplace, map, jobs.
 
-Run locally:
+Run locally (two terminals):
 
     npm install
     cp .env.example .env
-    npm run dev
+    npm run dev:server   # API on http://localhost:3001
+    npm run dev          # frontend on http://localhost:5173, proxies /api to the API
+
+To share a demo, tunnel the frontend port: `ngrok http 5173`.
 
 Checks before every commit: `npm run lint` and `npm run build`.
 
